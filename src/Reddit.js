@@ -6,8 +6,14 @@ import { connect } from 'react-redux';
 
 class Reddit extends React.Component {
     render() {
-        const { posts } = this.props;
+        const { posts, isLoading, error } = this.props;
 
+        if(isLoading) {
+            return <div>Loading... </div>
+        }
+        if(error) {
+            return <div>{error.message}</div>
+        }
         return (
             <ul>
                 {posts.map(post => (
@@ -25,7 +31,9 @@ class Reddit extends React.Component {
 }
 
 const mapState = state => ({
-    posts: state.posts
+    posts: state.posts,
+    isLoading: state.isLoading,
+    error: state.error
 })
 
 export default connect(mapState)(Reddit)
