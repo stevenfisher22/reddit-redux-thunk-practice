@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 
 // Components
 import Reddit from './Reddit';
+import { getPosts } from './actions';
 
 // CSS
 import './index.css';
@@ -20,14 +21,23 @@ const initialState = {
 
 // Reducer
 function reducer(state = initialState, action) {
-    return state;
+    switch(action.type) {
+        case 'GET_POSTS_SUCCESS':
+            return {
+                posts: action.posts
+            };
+        default:
+            return state;
+    };
+        
 };
 
 // Store
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
+store.dispatch(getPosts())
 
 ReactDOM.render(
-    <Provider>
+    <Provider store={store}>
         <Reddit />
     </Provider>, 
     document.querySelector('#root')
